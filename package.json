@@ -1,0 +1,21 @@
+{
+  "name": "homebridge-bond-tv",
+  "version": "0.0.1",
+  "description": "Custom plugin to tune TV channels.",
+  "license": "ISC",
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "/home/hoobs/Source/Repos/homebridge-bond-tv"
+  },
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
+  "dependencies": {
+    "node-persist": "^2.1.0"
+  }
+}

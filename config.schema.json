@@ -1,0 +1,20 @@
+{
+    "pluginAlias": "Channel",
+    "pluginType": "accessory",
+    "singular": false,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "title": "Name",
+                "type": "string",
+                "required": true
+            },
+            "data": {
+                "title": "Data",
+                "type": "string",
+		"required": true
+            }
+        }
+    }
+}
