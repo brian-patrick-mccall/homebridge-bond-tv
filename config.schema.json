@@ -10,10 +10,45 @@
                 "type": "string",
                 "required": true
             },
+            "bond": {
+                "title": "Bond IP address / host name",
+                "type": "string",
+                "required": true
+            },
+            "token": {
+                "title": "Bond token",
+                "type": "string",
+                "required": true
+            },
             "data": {
                 "title": "Data",
                 "type": "string",
 		"required": true
+            },
+            "freq": {
+                "title": "Frequency (38 for IR)",
+                "type": "integer",
+                "required": true
+            },
+            "modulation": {
+                "title": "Modulation (enter OOK if IR or unknown)",
+                "type": "string",
+                "required": true
+            },
+            "encoding": {
+                "title": "Encoding (most likely hex)",
+                "type": "string",
+                "required": true
+            },
+            "bps": {
+                "title": "Bits per second (between 100 and 40000)",
+                "type": "integer",
+                "required": true
+            },
+            "reps": {
+                "title": "Repetitions",
+                "type": "integer",
+                "required": true
             }
         }
     }

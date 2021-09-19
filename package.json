@@ -1,6 +1,6 @@
 {
   "name": "homebridge-bond-tv",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Custom plugin to tune TV channels.",
   "license": "Apache-2.0",
   "keywords": [
