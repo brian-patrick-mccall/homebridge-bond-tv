@@ -12,7 +12,6 @@ module.exports = function(homebridge) {
 }
 
 function BondTvChannel(log, config) {
-  log("Hello world!");
   this.log = log;
   this.name = config.name;
   this.revertTimer = null;
@@ -68,7 +67,7 @@ BondTvChannel.prototype._setOn = function(on, callback) {
     }
   };
 
-  //this.requestTimer = setTimeout(function() {
+  this.requestTimer = setTimeout(function() {
     request({
       method: 'PUT',
       url: bondurl,
@@ -81,11 +80,11 @@ BondTvChannel.prototype._setOn = function(on, callback) {
     requestCallback
     );
 
-  //}, 1000);
+  }, 3000);
 
   this.revertTimer = setTimeout(function() {
     this._service.setCharacteristic(Characteristic.On, false);
-  }.bind(this), 2000);
+  }.bind(this), 5000);
 
   callback();
 }
