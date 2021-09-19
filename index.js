@@ -1,5 +1,5 @@
 "use strict";
-const fetch = require('node-fetch');
+import fetch from "node-fetch";
 
 var Service, Characteristic, HomebridgeAPI;
 
@@ -12,29 +12,30 @@ module.exports = function(homebridge) {
 }
 
 function BondTvChannel(log, config) {
+  log("Hello world!");
   this.log = log;
   this.name = config.name;
   this.time = 100;
   this.timer = null;
   this.bond = config.bond;
   this.token = config.token;
-  this._service = new Service.StatelessProgrammableSwitch(this.name);
+  this._service = new Service.Switch(this.name);
   
   this.cacheDirectory = HomebridgeAPI.user.persistPath();
   this.storage = require('node-persist');
   this.storage.initSync({dir:this.cacheDirectory, forgiveParseErrors: true});
   
-  this._service.getCharacteristic(Characteristic.ProgrammableSwitchEvent)
-    .on('get', this._get.bind(this));
+  this._service.getCharacteristic(Characteristic.On)
+    .on('set', this._setOn.bind(this));
 }
 
 BondTvChannel.prototype.getServices = function() {
   return [this._service];
 }
 
-BondTvChannel.prototype._get = function(val, callback) {
+BondTvChannel.prototype._setOn = function(on, callback) {
 
-  this.log("Setting switch to " + val);
+  this.log("Setting switch to " + on);
 
   const bondurl = "http://" + this.bond + "/v2/signal/tx"
 
@@ -52,10 +53,16 @@ BondTvChannel.prototype._get = function(val, callback) {
       headers: {
         'BOND-Token': this.token,
         'Content-Type': 'application/json'
-        }
-      },
+        },
       body: JSON.stringify(body)
+      }
     );
+
+  if (on) {
+    this.timer = setTimeout(function() {
+      this._service.setCharacteristic(Characteristic.On, false);
+    }.bind(this), this.time);
+  }
 
   callback();
 }
