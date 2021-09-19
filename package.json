@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "/home/hoobs/Source/Repos/homebridge-bond-tv"
+    "url": "git@github.com:brian-patrick-mccall/homebridge-bond-tv.git"
   },
   "engines": {
     "node": ">=0.12.0",
