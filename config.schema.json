@@ -20,6 +20,11 @@
                 "type": "string",
                 "required": true
             },
+	    "TV": {
+		    "title": "TV Device ID (used to turn on TV)",
+		    "type": "string",
+		    "required": false
+	    },
             "data": {
                 "title": "Data",
                 "type": "string",
