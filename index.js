@@ -1,5 +1,5 @@
 "use strict";
-import fetch from "node-fetch";
+var request = require("request");
 
 var Service, Characteristic, HomebridgeAPI;
 
@@ -15,10 +15,16 @@ function BondTvChannel(log, config) {
   log("Hello world!");
   this.log = log;
   this.name = config.name;
-  this.time = 100;
-  this.timer = null;
+  this.revertTimer = null;
+  this.requestTimer = null;
   this.bond = config.bond;
   this.token = config.token;
+  this.freq = config.freq;
+  this.bps = config.bps;
+  this.reps = config.reps;
+  this.modulation = config.modulation;
+  this.encoding = config.encoding;
+  this.data = config.data;
   this._service = new Service.Switch(this.name);
   
   this.cacheDirectory = HomebridgeAPI.user.persistPath();
@@ -35,34 +41,51 @@ BondTvChannel.prototype.getServices = function() {
 
 BondTvChannel.prototype._setOn = function(on, callback) {
 
-  this.log("Setting switch to " + on);
+  //this.log("Setting switch to " + on);
 
-  const bondurl = "http://" + this.bond + "/v2/signal/tx"
+  if (!on) {
+    callback();
+    return;
+  }
 
-  const body = {
-    "freq": this.freq,
-    "bps": this.bps,
-    "reps": this.reps,
-    "modulation": this.modulation,
-    "encoding": this.encoding,
-    "data": this.data
+  var log = this.log;
+
+  const bondurl = "http://" + this.bond + "/v2/signal/tx";
+
+  var body = JSON.stringify({"freq": this.freq,
+		"bps": this.bps,
+		"reps": this.reps,
+		"modulation": this.modulation,
+		"encoding": this.encoding,
+		"data": this.data});
+
+  var token = this.token;
+
+  var requestCallback = function(error, response, body) {
+    if (error) {
+      log("Upload failed: " + error);
+    } else {
     }
+  };
 
-  const response = fetch(bondurl, {
+  //this.requestTimer = setTimeout(function() {
+    request({
       method: 'PUT',
+      url: bondurl,
       headers: {
-        'BOND-Token': this.token,
-        'Content-Type': 'application/json'
+          'BOND-Token': token,
+          'Content-Type': 'application/json'
         },
-      body: JSON.stringify(body)
-      }
+      body: body
+    },
+    requestCallback
     );
 
-  if (on) {
-    this.timer = setTimeout(function() {
-      this._service.setCharacteristic(Characteristic.On, false);
-    }.bind(this), this.time);
-  }
+  //}, 1000);
+
+  this.revertTimer = setTimeout(function() {
+    this._service.setCharacteristic(Characteristic.On, false);
+  }.bind(this), 2000);
 
   callback();
 }
